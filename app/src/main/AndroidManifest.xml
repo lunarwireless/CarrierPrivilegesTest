@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lunarwireless.carrierprivilegestest">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+
+        <service
+            android:name=".MessagingService"
+            android:permission="android.permission.BIND_CARRIER_MESSAGING_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.carrier.CarrierMessagingService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.carrier.LONG_LIVED_BINDING"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".CarrierConfigService"
+            android:permission="android.permission.BIND_CARRIER_SERVICES">
+            <intent-filter>
+                <action android:name="android.service.carrier.ConfigService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.carrier.LONG_LIVED_BINDING"
+                android:value="true" />
+        </service>
+    </application>
+</manifest>
