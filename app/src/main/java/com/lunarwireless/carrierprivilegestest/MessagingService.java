@@ -17,7 +17,7 @@ public class MessagingService extends CarrierMessagingService {
     public void onFilterSms(@NonNull MessagePdu pdu, @NonNull String format, int destPort, int subId, @NonNull ResultCallback<Boolean> callback) {
         super.onFilterSms(pdu, format, destPort, subId, callback);
         Log.i(LOG_TAG,
-                String.format("onFilterSms - \n\t%s", pdu.describeContents())
+                String.format("onFilterSms - \n\tBytes: %s", bytePartsToString(pdu.getPdus()))
         );
     }
 
@@ -25,7 +25,7 @@ public class MessagingService extends CarrierMessagingService {
     public void onReceiveTextSms(@NonNull MessagePdu pdu, @NonNull String format, int destPort, int subId, @NonNull ResultCallback<Integer> callback) {
         super.onReceiveTextSms(pdu, format, destPort, subId, callback);
         Log.i(LOG_TAG,
-                String.format("onReceiveTextSms - \n\t%s", pdu.describeContents())
+                String.format("onReceiveTextSms - \n\tBytes: %s", bytePartsToString(pdu.getPdus()))
         );
     }
 
@@ -108,14 +108,27 @@ public class MessagingService extends CarrierMessagingService {
         return sb.toString();
     }
 
+    private static String bytePartsToString(List<byte[]> parts) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < parts.size(); ++i) {
+            sb
+                    .append('\n')
+                    .append('\t')
+                    .append(i)
+                    .append(" --> ")
+                    .append(byteArrayToHex(parts.get(i)));
+        }
+        return sb.toString();
+    }
+
     private static String partsToString(List<String> parts) {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < parts.size(); ++i) {
             sb
                     .append('\n')
+                    .append('\t')
                     .append(i)
-                    .append('.')
-                    .append(' ')
+                    .append(" --> ")
                     .append(parts.get(i));
         }
         return sb.toString();
